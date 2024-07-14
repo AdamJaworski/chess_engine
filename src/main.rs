@@ -1,67 +1,31 @@
 mod r#macro;
+mod enums;
+mod utilities;
+mod attack_masks;
 
-enum Squares {
-    A8, B8, C8, D8, E8, F8, G8, H8,
-    A7, B7, C7, D7, E7, F7, G7, H7,
-    A6, B6, C6, D6, E6, F6, G6, H6,
-    A5, B5, C5, D5, E5, F5, G5, H5,
-    A4, B4, C4, D4, E4, F4, G4, H4,
-    A3, B3, C3, D3, E3, F3, G3, H3,
-    A2, B2, C2, D2, E2, F2, G2, H2,
-    A1, B1, C1, D1, E1, F1, G1, H1
-}
+use enums::Squares;
+use enums::Side;
 
-enum Side {
-    White, Black
-}
+
 const not_a_file: u64 = 18374403900871474942;
 const not_b_file: u64 = 18302063728033398269;
 const not_g_file: u64 = 13816973012072644543;
 const not_h_file: u64 = 9187201950435737471;
 
 
-fn mask_pawn_attacks(square: Squares, side: Side) -> u64
-{
-    let mut  attacks: u64  = 0;
-    let mut  bitboard: u64 = 0;
-
-    set_bit!(bitboard, square);
-
-    if (side as u8 == 0) {
-        attacks |= ((bitboard >> 7) & not_a_file);
-        attacks |= ((bitboard >> 9) & not_a_file);
+fn init_leapers_attacks(pawn_attacks: &mut [[u64; 64]; 2]) {
+    for square in 0u8..64 {
+        pawn_attacks[Side::White as usize][square as usize] = attack_masks::mask_pawn_attacks(Side::White, Squares::from_u8(square).unwrap());
+        pawn_attacks[Side::Black as usize][square as usize] = attack_masks::mask_pawn_attacks(Side::Black, Squares::from_u8(square).unwrap());
     }
-    else {
-        attacks |= ((bitboard << 7) & not_a_file);
-        attacks |= ((bitboard << 9) & not_a_file);
-    }
-
-    return attacks;
-}
-
-
-fn print_board(bitboard: u64) {
-    println!("\n  Bitboard: {}\n", bitboard);
-    for rank in 0..8 {
-        for file in 0..8 {
-            let square: u8 = rank * 8 + file;
-            if file == 0 { print!("  {} ", 8 - rank); }
-            
-            print!(" {} ", get_bit!(bitboard, square) as u8);
-        }
-        println!();
-    }
-
-    println!("     A  B  C  D  E  F  G  H\n\n")
-
 }
 
 fn main() {
     let mut bitboard: u64 = 0;
-    let mut pawn_attacks: [[u8; 2]; 64];
-
+    let mut knight_attacks: [u64; 64];
+    let mut pawn_attacks: [[u64; 64]; 2] = [[0; 64]; 2];
 
     println!("BBC engine");
 
-    print_board(mask_pawn_attacks(Squares::H5, Side::Black));
+    utilities::print_board(attack_masks::mask_pawn_attacks(Side::Black, Squares::H5));
 }
