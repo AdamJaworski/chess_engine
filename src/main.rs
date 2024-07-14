@@ -1,16 +1,4 @@
-macro_rules! get_bit{
-    ($bitboard: expr, $square: expr) => {($bitboard & (1 << $square as u8)) != 0};
-}
-
-macro_rules! set_bit{
-    ($bitboard: expr, $square: expr) => {$bitboard |= (1 << $square as u8)};
-}
-
-
-macro_rules! pop_bit {
-    ($bitboard: expr, $square: expr) => {$bitboard ^= if get_bit!($bitboard, $square) { (1 << $square as u8) } else {0};};
-}
-
+mod r#macro;
 
 enum Squares {
     A8, B8, C8, D8, E8, F8, G8, H8,
@@ -26,6 +14,10 @@ enum Squares {
 enum Side {
     White, Black
 }
+const not_a_file: u64 = 18374403900871474942;
+const not_b_file: u64 = 18302063728033398269;
+const not_g_file: u64 = 13816973012072644543;
+const not_h_file: u64 = 9187201950435737471;
 
 
 fn mask_pawn_attacks(square: Squares, side: Side) -> u64
@@ -35,13 +27,13 @@ fn mask_pawn_attacks(square: Squares, side: Side) -> u64
 
     set_bit!(bitboard, square);
 
-    if (side as u8 == 0)
-    {
-        attacks |= (bitboard >> 7);
+    if (side as u8 == 0) {
+        attacks |= ((bitboard >> 7) & not_a_file);
+        attacks |= ((bitboard >> 9) & not_a_file);
     }
-
     else {
-
+        attacks |= ((bitboard << 7) & not_a_file);
+        attacks |= ((bitboard << 9) & not_a_file);
     }
 
     return attacks;
@@ -67,12 +59,9 @@ fn print_board(bitboard: u64) {
 fn main() {
     let mut bitboard: u64 = 0;
     let mut pawn_attacks: [[u8; 2]; 64];
-    let not_a_file: u64 = 18374403900871474942;
-    let not_b_file: u64 = 18302063728033398269;
-    let not_g_file: u64 = 13816973012072644543;
-    let not_h_file: u64 = 9187201950435737471;
+
 
     println!("BBC engine");
 
-    print_board(mask_pawn_attacks(Squares::E4, Side::White));
+    print_board(mask_pawn_attacks(Squares::H5, Side::Black));
 }
