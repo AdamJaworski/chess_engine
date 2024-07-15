@@ -3,52 +3,96 @@ use std::convert::TryFrom;
 
 
 
-pub enum Squares {
-    A8, B8, C8, D8, E8, F8, G8, H8,
-    A7, B7, C7, D7, E7, F7, G7, H7,
-    A6, B6, C6, D6, E6, F6, G6, H6,
-    A5, B5, C5, D5, E5, F5, G5, H5,
-    A4, B4, C4, D4, E4, F4, G4, H4,
-    A3, B3, C3, D3, E3, F3, G3, H3,
-    A2, B2, C2, D2, E2, F2, G2, H2,
-    A1, B1, C1, D1, E1, F1, G1, H1,
+#[derive(Copy, Clone, PartialEq)]
+pub struct Square {
+    value: usize,
 }
+impl Square {
+    pub const A1: Self = Self { value: 0 };
+    pub const B1: Self = Self { value: 1 };
+    pub const C1: Self = Self { value: 2 };
+    pub const D1: Self = Self { value: 3 };
+    pub const E1: Self = Self { value: 4 };
+    pub const F1: Self = Self { value: 5 };
+    pub const G1: Self = Self { value: 6 };
+    pub const H1: Self = Self { value: 7 };
+    pub const A2: Self = Self { value: 8 };
+    pub const B2: Self = Self { value: 9 };
+    pub const C2: Self = Self { value: 10 };
+    pub const D2: Self = Self { value: 11 };
+    pub const E2: Self = Self { value: 12 };
+    pub const F2: Self = Self { value: 13 };
+    pub const G2: Self = Self { value: 14 };
+    pub const H2: Self = Self { value: 15 };
+    pub const A3: Self = Self { value: 16 };
+    pub const B3: Self = Self { value: 17 };
+    pub const C3: Self = Self { value: 18 };
+    pub const D3: Self = Self { value: 19 };
+    pub const E3: Self = Self { value: 20 };
+    pub const F3: Self = Self { value: 21 };
+    pub const G3: Self = Self { value: 22 };
+    pub const H3: Self = Self { value: 23 };
+    pub const A4: Self = Self { value: 24 };
+    pub const B4: Self = Self { value: 25 };
+    pub const C4: Self = Self { value: 26 };
+    pub const D4: Self = Self { value: 27 };
+    pub const E4: Self = Self { value: 28 };
+    pub const F4: Self = Self { value: 29 };
+    pub const G4: Self = Self { value: 30 };
+    pub const H4: Self = Self { value: 31 };
+    pub const A5: Self = Self { value: 32 };
+    pub const B5: Self = Self { value: 33 };
+    pub const C5: Self = Self { value: 34 };
+    pub const D5: Self = Self { value: 35 };
+    pub const E5: Self = Self { value: 36 };
+    pub const F5: Self = Self { value: 37 };
+    pub const G5: Self = Self { value: 38 };
+    pub const H5: Self = Self { value: 39 };
+    pub const A6: Self = Self { value: 40 };
+    pub const B6: Self = Self { value: 41 };
+    pub const C6: Self = Self { value: 42 };
+    pub const D6: Self = Self { value: 43 };
+    pub const E6: Self = Self { value: 44 };
+    pub const F6: Self = Self { value: 45 };
+    pub const G6: Self = Self { value: 46 };
+    pub const H6: Self = Self { value: 47 };
+    pub const A7: Self = Self { value: 48 };
+    pub const B7: Self = Self { value: 49 };
+    pub const C7: Self = Self { value: 50 };
+    pub const D7: Self = Self { value: 51 };
+    pub const E7: Self = Self { value: 52 };
+    pub const F7: Self = Self { value: 53 };
+    pub const G7: Self = Self { value: 54 };
+    pub const H7: Self = Self { value: 55 };
+    pub const A8: Self = Self { value: 56 };
+    pub const B8: Self = Self { value: 57 };
+    pub const C8: Self = Self { value: 58 };
+    pub const D8: Self = Self { value: 59 };
+    pub const E8: Self = Self { value: 60 };
+    pub const F8: Self = Self { value: 61 };
+    pub const G8: Self = Self { value: 62 };
+    pub const H8: Self = Self { value: 63 };
+    pub const NULL: Self = Self { value: 64 };
 
-impl TryFrom<u8> for Squares {
-    type Error = ();
-
-    fn try_from(value: u8){
-        match value {
-            0 => Ok(Squares::A8),  1 => Ok(Squares::B8),  2 => Ok(Squares::C8),  3 => Ok(Squares::D8),
-            4 => Ok(Squares::E8),  5 => Ok(Squares::F8),  6 => Ok(Squares::G8),  7 => Ok(Squares::H8),
-            8 => Ok(Squares::A7),  9 => Ok(Squares::B7), 10 => Ok(Squares::C7), 11 => Ok(Squares::D7),
-            12 => Ok(Squares::E7), 13 => Ok(Squares::F7), 14 => Ok(Squares::G7), 15 => Ok(Squares::H7),
-            16 => Ok(Squares::A6), 17 => Ok(Squares::B6), 18 => Ok(Squares::C6), 19 => Ok(Squares::D6),
-            20 => Ok(Squares::E6), 21 => Ok(Squares::F6), 22 => Ok(Squares::G6), 23 => Ok(Squares::H6),
-            24 => Ok(Squares::A5), 25 => Ok(Squares::B5), 26 => Ok(Squares::C5), 27 => Ok(Squares::D5),
-            28 => Ok(Squares::E5), 29 => Ok(Squares::F5), 30 => Ok(Squares::G5), 31 => Ok(Squares::H5),
-            32 => Ok(Squares::A4), 33 => Ok(Squares::B4), 34 => Ok(Squares::C4), 35 => Ok(Squares::D4),
-            36 => Ok(Squares::E4), 37 => Ok(Squares::F4), 38 => Ok(Squares::G4), 39 => Ok(Squares::H4),
-            40 => Ok(Squares::A3), 41 => Ok(Squares::B3), 42 => Ok(Squares::C3), 43 => Ok(Squares::D3),
-            44 => Ok(Squares::E3), 45 => Ok(Squares::F3), 46 => Ok(Squares::G3), 47 => Ok(Squares::H3),
-            48 => Ok(Squares::A2), 49 => Ok(Squares::B2), 50 => Ok(Squares::C2), 51 => Ok(Squares::D2),
-            52 => Ok(Squares::E2), 53 => Ok(Squares::F2), 54 => Ok(Squares::G2), 55 => Ok(Squares::H2),
-            56 => Ok(Squares::A1), 57 => Ok(Squares::B1), 58 => Ok(Squares::C1), 59 => Ok(Squares::D1),
-            60 => Ok(Squares::E1), 61 => Ok(Squares::F1), 62 => Ok(Squares::G1), 63 => Ok(Squares::H1),
-            _ => Err(()),
-        }
+    #[inline]
+    pub const fn get_value(&self) -> usize {
+        self.value
     }
 }
-
-impl Squares {
-    pub fn from_u8(value: u8) -> Result<Self, ()> {
-        Squares::try_from(value)
-    }
-}
-
-
 // ###################  SIDES  ##################
 
-pub enum Side {
-    White, Black
+#[derive(Copy, Clone, PartialEq)]
+pub struct Side(usize);
+impl Side {
+    pub const WHITE: Side = Side::from_raw(0);
+    pub const BLACK: Side = Side::from_raw(1);
+    #[inline]
+    pub const fn from_raw(value: usize) -> Self {
+        Self { 0: value }
+    }
+    #[inline]
+    pub const fn current(&self) -> usize {
+        self.0
+    }
+
 }

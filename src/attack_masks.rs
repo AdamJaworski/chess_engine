@@ -1,14 +1,13 @@
-use crate::enums::{Side, Squares};
-use crate::{not_a_file, not_h_file, set_bit};
+use crate::{not_a_file, not_b_file, not_g_file, not_h_file, set_bit};
+use crate::enums::{Side, Square};
 
-pub fn mask_pawn_attacks(side: Side, square: Squares) -> u64
-{
+pub fn mask_pawn_attacks(side: Side, square: Square) -> u64 {
     let mut  attacks: u64  = 0;
     let mut  bitboard: u64 = 0;
 
     set_bit!(bitboard, square);
 
-    if (side as u8 == 0) {
+    if (side.current() == 0) {
         attacks |= ((bitboard >> 7) & not_a_file);
         attacks |= ((bitboard >> 9) & not_h_file);
     }
@@ -20,10 +19,86 @@ pub fn mask_pawn_attacks(side: Side, square: Squares) -> u64
     return attacks;
 }
 
-pub fn mask_knight_attacks(square: Squares) -> u64 {
+pub fn mask_knight_attacks(square: Square) -> u64 {
     let mut  attacks: u64  = 0;
     let mut  bitboard: u64 = 0;
 
     set_bit!(bitboard, square);
 
+    attacks |= (bitboard >> 17) & not_h_file;
+    attacks |= (bitboard >> 15) & not_a_file;
+
+    attacks |= (bitboard >> 10) & (not_h_file & not_g_file);
+    attacks |= (bitboard << 6)  & (not_h_file & not_g_file);
+
+    attacks |= (bitboard << 10) & (not_a_file & not_b_file);
+    attacks |= (bitboard >> 6)  & (not_a_file & not_b_file);
+
+    attacks |= (bitboard << 17) & not_a_file;
+    attacks |= (bitboard << 15) & not_h_file;
+    return attacks;
 }
+
+pub fn mask_king_attacks(square: Square) -> u64 {
+    let mut  attacks: u64  = 0;
+    let mut  bitboard: u64 = 0;
+
+    set_bit!(bitboard, square);
+
+    attacks |= (bitboard >> 9) & not_h_file;
+    attacks |= (bitboard >> 1) & not_h_file;
+    attacks |= (bitboard << 7) & not_h_file;
+
+    attacks |= (bitboard << 9) & not_a_file;
+    attacks |= (bitboard << 1) & not_a_file;
+    attacks |= (bitboard >> 7) & not_a_file;
+
+    attacks |= (bitboard << 8);
+    attacks |= (bitboard >> 8);
+    return attacks;
+}
+
+pub fn mask_bishop_attacks(square: Square) -> u64 {
+    let mut  attacks: u64  = 0;
+    let mut  bitboard: u64 = 0;
+
+    let square_index = square.get_value();
+    let target_rank = (square_index / 8) as isize;
+    let target_file = (square_index % 8) as isize;
+
+    set_bit!(bitboard, square);
+
+    let mut rank = target_rank + 1;
+    let mut file = target_file + 1;
+
+    while rank <= 6 && file <= 6 {
+        attacks |= 1 << (rank * 8 + file);
+        rank = rank + 1; file = file + 1;
+    }
+
+    rank = target_rank - 1; file = target_file + 1;
+
+    while rank >= 1 && file <= 6 {
+        attacks |= 1 << (rank * 8 + file);
+        rank = rank - 1; file = file + 1;
+    }
+
+    rank = target_rank + 1; file = target_file - 1;
+
+    while rank <= 6 && file >= 1 {
+        attacks |= 1 << (rank * 8 + file);
+        rank = rank + 1; file = file - 1;
+    }
+
+
+    rank = target_rank - 1; file = target_file - 1;
+
+    while rank >= 1 && file <= 6 {
+        attacks |= 1 << (rank * 8 + file);
+        rank = rank - 1; file = file - 1;
+    }
+
+    return attacks;
+}
+
+proofs
