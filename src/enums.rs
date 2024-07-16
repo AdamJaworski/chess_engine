@@ -75,24 +75,43 @@ impl Square {
     pub const NULL: Self = Self { value: 64 };
 
     #[inline]
+    pub const fn from_raw(value: usize) -> Self {
+        Self { value }
+    }
+
+    #[inline]
     pub const fn get_value(&self) -> usize {
         self.value
+    }
+    pub const fn from_coords(rank: usize, file: usize) -> Self {
+        Self { value: rank * 8 + file }
+    }
+    pub fn to_string(&self) -> String {
+        if *self == Square::NULL {
+            return "NULL".to_string();
+        }
+
+        let file: usize = self.value % 8;
+        let rank: usize = ((self.value as f32) / 8_f32).floor() as usize + 1;
+        return format!("{}{}", ('a' as usize + file) as u8 as char, rank);
     }
 }
 // ###################  SIDES  ##################
 
-#[derive(Copy, Clone, PartialEq)]
-pub struct Side(usize);
-impl Side {
-    pub const WHITE: Side = Side::from_raw(0);
-    pub const BLACK: Side = Side::from_raw(1);
-    #[inline]
-    pub const fn from_raw(value: usize) -> Self {
-        Self { 0: value }
-    }
-    #[inline]
-    pub const fn current(&self) -> usize {
-        self.0
-    }
+    #[derive(Copy, Clone, PartialEq)]
+    pub struct Side(usize);
+    impl Side {
+        pub const WHITE: Side = Side::from_raw(0);
+        pub const BLACK: Side = Side::from_raw(1);
+
+        #[inline]
+        pub const fn from_raw(value: usize) -> Self {
+            Self { 0: value }
+        }
+
+        #[inline]
+        pub const fn current(&self) -> usize {
+            self.0
+        }
 
 }

@@ -1,6 +1,6 @@
 #[macro_export]
 macro_rules! get_bit{
-    ($bitboard: expr, $square: expr) => {($bitboard & (1 << $square)) != 0};
+    ($bitboard: expr, $square: expr) => {($bitboard & (1 << $square.get_value())) != 0};
 }
 
 #[macro_export]
